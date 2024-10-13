@@ -1,6 +1,24 @@
 import streamlit as st
 import requests
+import pandas as pd
+import plotly.express as px 
 
+
+col = ["sentiment","text"]
+
+data = pd.read_csv('https://drive.google.com/file/d/1Ci6qfxGyf7OTosW38CUYsfsvcLv8GMJa/view?usp=sharing',encoding = 'latin1', names= col)
+
+data['sentiment'].plot(kind ='hist')
+
+
+st.set_page_config(
+    page_title="Real-Time Data Science Dashboard",
+    page_icon="✅",
+    layout="wide",
+)
+fig = px.histogram(
+        data_frame=data, y="sentiment")
+st.write(fig)
 
 # URL de votre API Azure
 API_URL = "https://p07.azurewebsites.net"
