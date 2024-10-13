@@ -7,33 +7,21 @@ import io
 from azure.storage.blob import BlobServiceClient
 
 
-connection_string = "DefaultEndpointsProtocol=https;AccountName=iaprojet9;AccountKey=FRefYH7L7rj9B7hWclYNiRoOPOcK0z46/6NvT50aEvHM+cn4P/1+WEkFNyweLJk4E0qqYa6HMWAX+AStGbeb1Q==;EndpointSuffix=core.windows.net"
-container_name = "datap09"
-blob_name = "training.1600000.processed.noemoticon.csv"
+source = 'https://iaprojet9.blob.core.windows.net/datap09/training.1600000.processed.noemoticon.csv?sp=r&st=2024-10-13T15:49:55Z&se=2024-10-13T23:49:55Z&sv=2022-11-02&sr=b&sig=AdZWjPFpKQ7SKNdUtKK%2FaChZSxgXJCIBMCKoNzfCqPM%3D'
 
-# Créer un client BlobService
-blob_service_client = BlobServiceClient.from_connection_string(connection_string)
 
-# Créer un client pour le conteneur
-container_client = blob_service_client.get_container_client(container_name)
-
-# Lire le fichier CSV directement depuis le Blob Storage
-blob_client = container_client.get_blob_client(blob_name)
-
-# Télécharger le contenu du blob dans un DataFrame Pandas
-blob_data = blob_client.download_blob()
 col = ["sentiment", "ids", "date", "flag", "user", "text"]
-data = pd.read_csv(io.BytesIO(blob_data.readall()),encoding = 'latin1', names= col)
+data = pd.read_csv(source,encoding = 'latin1', names= col)
 
 data['sentiment'].plot(kind ='hist')
 
 
 st.set_page_config(
-    page_title="Tableau de bord Projet 9",
+    page_title="Tableau de bord Projet 9 ",
     page_icon="✅",
     layout="wide",
 )
-fig = px.histogram(
+fig = px.histogram(title='Distribution des classes',
         data_frame=data, y="sentiment")
 st.write(fig)
 
