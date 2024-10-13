@@ -7,12 +7,20 @@ import io
 from azure.storage.blob import BlobServiceClient
 
 
+st.title = "Tableau de bord Projet 9 : Anlyse de sentiment"
 
 st.set_page_config(
     page_title="Tableau de bord Projet 9 : Anlyse de sentiment",
     page_icon="✅",
     layout="wide",
 )
+
+row1 = st.columns(2)
+
+
+grid = [col.container(height=200) for col in row1]
+
+
 
 @st.cache(persist=True)
 def load_file():
@@ -24,13 +32,13 @@ def load_file():
 
 data = load_file()
 data_sample = data.sample(50)
-st.write(data_sample)
+st.write(data_sample,title= "Apperçu des données source")
 
 
-
-fig = px.histogram(title='Distribution des classes',
-        data_frame=data, y="sentiment")
-st.write(fig)
+with grid[0]:
+    fig = px.histogram(title='Distribution des classes',
+            data_frame=data, x="sentiment")
+    st.write(fig)
 
 # URL de votre API Azure
 API_URL = "https://p07.azurewebsites.net"
@@ -43,19 +51,20 @@ if 'sentiment' not in st.session_state:
 if 'feedback_given' not in st.session_state:
     st.session_state.feedback_given = False
 
-user_input = st.text_input("Entrez une phrase :")
+with grid[1]:
+    user_input = st.text_input("Entrez une phrase :")
 
-# Fonction pour analyser le sentiment
-def analyze_sentiment():
-    
-    response = requests.post(f"{API_URL}/predict_sentiment", params={"text":user_input})
-    st.session_state.sentiment = response.json()['sentiment']
-    st.session_state.probability = response.json()['probability']
-    
-    
-st.session_state.feedback_given = False
+    # Fonction pour analyser le sentiment
+    def analyze_sentiment():
+        
+        response = requests.post(f"{API_URL}/predict_sentiment", params={"text":user_input})
+        st.session_state.sentiment = response.json()['sentiment']
+        st.session_state.probability = response.json()['probability']
+        
+        
+    st.session_state.feedback_given = False
 
-# Bouton pour analyser
-if st.button("Analyser"):
-    analyze_sentiment()
+    # Bouton pour analyser
+    if st.button("Analyser"):
+        analyze_sentiment()
 
