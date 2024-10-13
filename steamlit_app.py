@@ -11,9 +11,9 @@ source = 'https://iaprojet9.blob.core.windows.net/datap09/training.1600000.proce
 
 
 col = ["sentiment", "ids", "date", "flag", "user", "text"]
-data = pd.read_csv(source,encoding = 'latin1', names= col)
+data = pd.read_csv(source,encoding='latin1',names=col)
 
-data['sentiment'].plot(kind ='hist')
+
 
 
 st.set_page_config(
