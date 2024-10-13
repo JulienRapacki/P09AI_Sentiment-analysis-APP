@@ -15,14 +15,11 @@ st.set_page_config(
     layout="wide",
 )
 
-row1 = st.columns(2)
-
-
-grid = [col.container(height=200) for col in row1]
 
 
 
-@st.cache(persist=True)
+
+@st.cache_data(persist=True)
 def load_file():
     source = 'https://iaprojet9.blob.core.windows.net/datap09/training.1600000.processed.noemoticon.csv?sp=r&st=2024-10-13T15:49:55Z&se=2024-10-13T23:49:55Z&sv=2022-11-02&sr=b&sig=AdZWjPFpKQ7SKNdUtKK%2FaChZSxgXJCIBMCKoNzfCqPM%3D'
     col = ["sentiment", "ids", "date", "flag", "user", "text"]
@@ -30,10 +27,15 @@ def load_file():
     
     return data
 
+
 data = load_file()
 data_sample = data.sample(50)
 st.write(data_sample,title= "Apperçu des données source")
 
+row2 = st.columns(2)
+
+
+grid = [col.container(height=200) for col in row2]
 
 with grid[0]:
     fig = px.histogram(title='Distribution des classes',
