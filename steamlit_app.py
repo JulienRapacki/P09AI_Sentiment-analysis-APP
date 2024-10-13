@@ -6,14 +6,17 @@ import plotly.express as px
 import io
 from azure.storage.blob import BlobServiceClient
 
+@st.cache(persist=True)
+def load_file():
+    source = 'https://iaprojet9.blob.core.windows.net/datap09/training.1600000.processed.noemoticon.csv?sp=r&st=2024-10-13T15:49:55Z&se=2024-10-13T23:49:55Z&sv=2022-11-02&sr=b&sig=AdZWjPFpKQ7SKNdUtKK%2FaChZSxgXJCIBMCKoNzfCqPM%3D'
+    col = ["sentiment", "ids", "date", "flag", "user", "text"]
+    data = pd.read_csv(source,encoding='latin1',names=col)
+    
+    return data
 
-source = 'https://iaprojet9.blob.core.windows.net/datap09/training.1600000.processed.noemoticon.csv?sp=r&st=2024-10-13T15:49:55Z&se=2024-10-13T23:49:55Z&sv=2022-11-02&sr=b&sig=AdZWjPFpKQ7SKNdUtKK%2FaChZSxgXJCIBMCKoNzfCqPM%3D'
-
-
-col = ["sentiment", "ids", "date", "flag", "user", "text"]
-data = pd.read_csv(source,encoding='latin1',names=col)
-
-
+data = load_file()
+data_sample = data.sample(50)
+st.write(data_sample)
 
 
 st.set_page_config(
