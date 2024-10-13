@@ -3,16 +3,33 @@ import requests
 import pandas as pd
 import plotly.express as px 
 
+import io
+from azure.storage.blob import BlobServiceClient
 
-col = ["sentiment","text"]
 
-data = pd.read_csv('https://drive.google.com/file/d/1Ci6qfxGyf7OTosW38CUYsfsvcLv8GMJa/view?usp=sharing',encoding = 'latin1', names= col)
+connection_string = "DefaultEndpointsProtocol=https;AccountName=iaprojet9;AccountKey=FRefYH7L7rj9B7hWclYNiRoOPOcK0z46/6NvT50aEvHM+cn4P/1+WEkFNyweLJk4E0qqYa6HMWAX+AStGbeb1Q==;EndpointSuffix=core.windows.net"
+container_name = "datap09"
+blob_name = "training.1600000.processed.noemoticon.csv"
+
+# Créer un client BlobService
+blob_service_client = BlobServiceClient.from_connection_string(connection_string)
+
+# Créer un client pour le conteneur
+container_client = blob_service_client.get_container_client(container_name)
+
+# Lire le fichier CSV directement depuis le Blob Storage
+blob_client = container_client.get_blob_client(blob_name)
+
+# Télécharger le contenu du blob dans un DataFrame Pandas
+blob_data = blob_client.download_blob()
+col = ["sentiment", "ids", "date", "flag", "user", "text"]
+data = pd.read_csv(io.BytesIO(blob_data.readall()),encoding = 'latin1', names= col)
 
 data['sentiment'].plot(kind ='hist')
 
 
 st.set_page_config(
-    page_title="Real-Time Data Science Dashboard",
+    page_title="Tableau de bord Projet 9",
     page_icon="✅",
     layout="wide",
 )
