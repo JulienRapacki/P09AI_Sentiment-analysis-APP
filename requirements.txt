@@ -1,4 +1,4 @@
-azure-storage-blob pandas
+azure-storage-blob
 pandas
 numpy
 plotly
