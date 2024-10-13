@@ -1,3 +1,4 @@
+azure_storage
 pandas
 numpy
 plotly
