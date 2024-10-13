@@ -6,6 +6,14 @@ import plotly.express as px
 import io
 from azure.storage.blob import BlobServiceClient
 
+
+
+st.set_page_config(
+    page_title="Tableau de bord Projet 9 : Anlyse de sentiment",
+    page_icon="✅",
+    layout="wide",
+)
+
 @st.cache(persist=True)
 def load_file():
     source = 'https://iaprojet9.blob.core.windows.net/datap09/training.1600000.processed.noemoticon.csv?sp=r&st=2024-10-13T15:49:55Z&se=2024-10-13T23:49:55Z&sv=2022-11-02&sr=b&sig=AdZWjPFpKQ7SKNdUtKK%2FaChZSxgXJCIBMCKoNzfCqPM%3D'
@@ -19,11 +27,7 @@ data_sample = data.sample(50)
 st.write(data_sample)
 
 
-st.set_page_config(
-    page_title="Tableau de bord Projet 9 ",
-    page_icon="✅",
-    layout="wide",
-)
+
 fig = px.histogram(title='Distribution des classes',
         data_frame=data, y="sentiment")
 st.write(fig)
@@ -38,8 +42,6 @@ if 'sentiment' not in st.session_state:
     st.session_state.sentiment = None
 if 'feedback_given' not in st.session_state:
     st.session_state.feedback_given = False
-
-st.title("Analyse de sentiment")
 
 user_input = st.text_input("Entrez une phrase :")
 
