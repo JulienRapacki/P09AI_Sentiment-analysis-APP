@@ -26,7 +26,7 @@ def main():
     
     @st.cache_data(persist=True)
     def load_file():
-        source = 'https://iaprojet9.blob.core.windows.net/datap09/training.1600000.processed.noemoticon.csv?sp=r&st=2024-10-13T15:49:55Z&se=2024-10-13T23:49:55Z&sv=2022-11-02&sr=b&sig=AdZWjPFpKQ7SKNdUtKK%2FaChZSxgXJCIBMCKoNzfCqPM%3D'
+        source = 'https://iaprojet9.blob.core.windows.net/datap09?sp=r&st=2024-10-16T14:35:40Z&se=2024-12-06T23:35:40Z&spr=https&sv=2022-11-02&sr=c&sig=I7OY8nfANoposq3LSE9TLCTJcWWSFFE0hw%2Fn%2BsYW19I%3D'
         col = ["sentiment", "ids", "date", "flag", "user", "text"]
         data = pd.read_csv(source,encoding='latin1',names=col)
         data['sentiment'] = data['sentiment'].map({0: 'negative', 4: 'positive'})
