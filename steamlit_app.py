@@ -69,7 +69,7 @@ ax.imshow(wordcloud, interpolation='bilinear')
 ax.axis("off")
 st.pyplot(fig)
 
-# URL de votre API Azure
+# URL API Azure
 API_URL = "https://apip09.azurewebsites.net/predict"
 
 
@@ -99,6 +99,10 @@ API_URL = "https://apip09.azurewebsites.net/predict"
 # if __name__=="__main__":
 #     main()
 # Fonction pour analyser le sentiment
+st.write('### Test du modèle')
+
+user_input = st.text_input("Entrez une phrase :")
+
 def analyze_sentiment():
     if user_input:
         response = requests.post(f"{API_URL}/predict_sentiment", json={"text": user_input})
