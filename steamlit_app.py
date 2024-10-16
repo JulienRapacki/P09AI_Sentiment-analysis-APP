@@ -26,7 +26,7 @@ def main():
     
     @st.cache_data(persist=True)
     def load_file():
-        source = 'https://iaprojet9.blob.core.windows.net/datap09?sp=r&st=2024-10-16T14:35:40Z&se=2024-12-06T23:35:40Z&spr=https&sv=2022-11-02&sr=c&sig=I7OY8nfANoposq3LSE9TLCTJcWWSFFE0hw%2Fn%2BsYW19I%3D'
+        source = 'https://iaprojet9.blob.core.windows.net/datap09-2/training.1600000.processed.noemoticon.csv?sp=racwdyt&st=2024-10-16T16:07:39Z&se=2024-11-08T01:07:39Z&spr=https&sv=2022-11-02&sr=b&sig=ytlI1KJUF65RcN4vMnDsF7QE6eLqJBbcuzZQ5rxPmao%3D'
         col = ["sentiment", "ids", "date", "flag", "user", "text"]
         data = pd.read_csv(source,encoding='latin1',names=col)
         data['sentiment'] = data['sentiment'].map({0: 'negative', 4: 'positive'})
@@ -72,7 +72,7 @@ def main():
     st.pyplot(fig)
     
     # URL de votre API Azure
-    API_URL = "https://apip09.azurewebsites.net/predict"
+    # API_URL = "https://apip09.azurewebsites.net/predict"
 
 
     #----------------------------------------------------------------------------------------
