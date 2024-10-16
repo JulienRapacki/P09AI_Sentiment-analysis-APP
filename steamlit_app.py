@@ -105,7 +105,7 @@ user_input = st.text_input("Entrez une phrase :")
 
 def analyze_sentiment():
     if user_input:
-        response = requests.post(f"{API_URL}/predict_sentiment", json={"text": user_input})
+        response = requests.post(f"{API_URL}", json={"text": user_input})
         if response.status_code == 200:
             result = response.json()
             st.session_state.sentiment = result['sentiment']
