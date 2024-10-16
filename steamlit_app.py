@@ -87,7 +87,7 @@ API_URL = "https://apip09.azurewebsites.net/predict"
         
 #             response = requests.post(f"{API_URL}/predict_sentiment", params={"text":user_input})
 #             st.session_state.sentiment = response.json()['sentiment']
-#             st.session_state.probability = response.json()['probability']
+#             
         
         
 #         st.session_state.feedback_given = False
@@ -109,14 +109,13 @@ def analyze_sentiment():
         if response.status_code == 200:
             result = response.json()
             st.session_state.sentiment = result['sentiment']
-            st.session_state.probability = result.get('probability', "N/A")
         else:
             st.error(f"Erreur de l'API: {response.status_code}")
 
 # Afficher le sentiment si déjà calculé
 if 'sentiment' in st.session_state:
     st.write(f"**Résultat de l'analyse :** {st.session_state.sentiment}")
-    st.write(f"**Probabilité :** {st.session_state.probability}")
+    
 
 # Bouton pour analyser
 if st.button("Analyser"):
