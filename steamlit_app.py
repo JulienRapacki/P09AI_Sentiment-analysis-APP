@@ -108,7 +108,17 @@ def analyze_sentiment():
         response = requests.post(f"{API_URL}", json={"text": user_input})
         if response.status_code == 200:
             result = response.json()
+            df  = pd.DataFrame(result.get('interpretation'))
             st.session_state.sentiment = result['sentiment']
+                
+            # Affiche l'interpretation
+
+            st.write("Analyse de l'interprétation")
+            
+            fig2 = px.bar(
+            data_frame= df, x="contribution", y="word",
+            color_discrete_sequence=['#7350EA'])
+            st.write(fig2)
         else:
             st.error(f"Erreur de l'API: {response.status_code}")
 
@@ -120,10 +130,7 @@ if 'sentiment' in st.session_state:
 # Bouton pour analyser
 if st.button("Analyser"):
     analyze_sentiment()
-    
-# Affiche l'interpretation
-df  = pd.DataFrame(user_input.json().get('interpretation'))
 
-st.dataframe(df,use_container_width= True)
+
 
 
