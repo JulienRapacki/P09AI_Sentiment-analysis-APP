@@ -120,4 +120,6 @@ if 'sentiment' in st.session_state:
 # Bouton pour analyser
 if st.button("Analyser"):
     analyze_sentiment()
-
+# Affiche l'interpretation
+df  = pd.DataFrame(user_input.get('interpretation'))
+print(df)
