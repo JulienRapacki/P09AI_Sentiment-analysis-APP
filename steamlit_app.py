@@ -4,6 +4,7 @@ import pandas as pd
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import plotly.express as px 
+import colorlover
 
 import io
 from azure.storage.blob import BlobServiceClient
@@ -12,7 +13,7 @@ from azure.storage.blob import BlobServiceClient
 
 
 st.set_page_config(
-    page_title="Tableau de bord Projet 9 : Anlyse de sentiments",
+    page_title="Tableau de bord Projet 9",
     page_icon="🧊",
     # layout="wide",
     menu_items={
@@ -35,7 +36,7 @@ data = load_file()
 data_sample = data.sample(50)
 
 
-st.markdown("<h1 style='color: #7350EA;'>Tableau de bord Projet 9 : Analyse de sentiments</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='color: #7350EA;'>Tableau de bord Projet 9 :\n Analyse de sentiments avec le Deep learning</h1>", unsafe_allow_html=True)
 
 st.write('### Aperçu des données')       
 st.dataframe(data_sample,use_container_width= True)
@@ -43,7 +44,7 @@ st.dataframe(data_sample,use_container_width= True)
 col1,col2 = st.columns([.5,.5],gap='medium',
                         vertical_alignment= "bottom")
 
-# WordCloud
+
 with col1:
     col1.subheader('Distribution de la Longueur des Phrases')
     data['txt_length'] = data['text'].apply(len)
@@ -63,8 +64,10 @@ with col2:
 #WordCloud
 st.write('### Nuage de Mots')
 text_cloud = " ".join(data_sample['text'])
-wordcloud = WordCloud(width=800, height=400, background_color='white', colormap='viridis').generate(text_cloud)
+
+wordcloud = WordCloud(width=800, height=400, background_color='white',colormap = 'Set2').generate(text_cloud)
 fig, ax = plt.subplots(figsize=(8, 4))
+
 ax.imshow(wordcloud, interpolation='bilinear')
 ax.axis("off")
 st.pyplot(fig)
@@ -101,7 +104,7 @@ API_URL = "https://apip09.azurewebsites.net/predict"
 # Fonction pour analyser le sentiment
 st.write('### Test du modèle')
 
-user_input = st.text_input("Entrez une phrase :")
+user_input = st.text_input("Saisissez une phrase en anglais:")
 
 def analyze_sentiment():
     if user_input:
@@ -110,10 +113,20 @@ def analyze_sentiment():
             result = response.json()
             df  = pd.DataFrame(result.get('interpretation'))
             st.session_state.sentiment = result['sentiment']
-                
+            st.write(f"**Résultat de l'analyse :** {st.session_state.sentiment}")    
             # Affiche l'interpretation
 
-            st.write("Analyse de l'interprétation")
+            st.write("")
+            
+            st.markdown(
+                """
+                <div style="background-color: #E6F4FA; padding: 10px; border-radius: 5px;">
+                    <h3 style="color: #262730;">Analyse de l'interprétation</h3>
+                    <p style="color: #262730;">Les mots avec des valeurs positives élevées sont les plus influents dans le résultat de l'analyse.<br> A l'opposé, les mots avec des valeurs négatives vont à l'encontre de la prédiction.</p>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
             
             fig2 = px.bar(
             data_frame= df, x="contribution", y="word",
@@ -123,14 +136,12 @@ def analyze_sentiment():
             st.error(f"Erreur de l'API: {response.status_code}")
 
 # Afficher le sentiment si déjà calculé
-if 'sentiment' in st.session_state:
-    st.write(f"**Résultat de l'analyse :** {st.session_state.sentiment}")
+# if 'sentiment' in st.session_state:
+#     st.write(f"**Résultat de l'analyse :** {st.session_state.sentiment}")
     
 
 # Bouton pour analyser
 if st.button("Analyser"):
     analyze_sentiment()
-
-
 
 
