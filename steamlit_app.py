@@ -4,7 +4,7 @@ import pandas as pd
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import plotly.express as px 
-import colorlover
+
 
 import io
 from azure.storage.blob import BlobServiceClient
@@ -64,10 +64,8 @@ with col2:
 #WordCloud
 st.write('### Nuage de Mots')
 text_cloud = " ".join(data_sample['text'])
-
 wordcloud = WordCloud(width=800, height=400, background_color='white',colormap = 'Set2').generate(text_cloud)
 fig, ax = plt.subplots(figsize=(8, 4))
-
 ax.imshow(wordcloud, interpolation='bilinear')
 ax.axis("off")
 st.pyplot(fig)
@@ -75,32 +73,6 @@ st.pyplot(fig)
 # URL API Azure
 API_URL = "https://apip09.azurewebsites.net/predict"
 
-
-#----------------------------------------------------------------------------------------
-
-#     if 'sentiment' not in st.session_state:
-#         st.session_state.sentiment = None
-
-#         st.write('### Test du modèle')
-    
-#         user_input = st.text_input("Entrez une phrase :")
-
-#         # Fonction pour analyser le sentiment
-#         def analyze_sentiment():
-        
-#             response = requests.post(f"{API_URL}/predict_sentiment", params={"text":user_input})
-#             st.session_state.sentiment = response.json()['sentiment']
-#             
-        
-        
-#         st.session_state.feedback_given = False
-
-#         # Bouton pour analyser
-#         if st.button("Analyser"):
-#             analyze_sentiment()
-
-# if __name__=="__main__":
-#     main()
 # Fonction pour analyser le sentiment
 st.write('### Test du modèle')
 
