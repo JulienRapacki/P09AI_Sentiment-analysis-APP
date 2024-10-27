@@ -72,7 +72,7 @@ st.pyplot(fig)
 
 # URL API Azure
 API_URL = "https://apip09.azurewebsites.net/predict"
-
+API_INTERPRET = "https://apip09.azurewebsites.net/interpret"
 # Fonction pour analyser le sentiment
 st.write('### Test du modèle')
 
@@ -83,29 +83,9 @@ def analyze_sentiment():
         response = requests.post(f"{API_URL}", json={"text": user_input})
         if response.status_code == 200:
             result = response.json()
-            df  = pd.DataFrame(result.get('interpretation'))
-            st.session_state.sentiment = result['sentiment']
-            st.write(f"**Résultat de l'analyse :** {st.session_state.sentiment}")    
-            # Affiche l'interpretation
-
-            st.write("")
             
-            st.markdown(
-                """
-                <div style="background-color: #E6F4FA; padding: 10px; border-radius: 5px;">
-                    <h3 style="color: #262730;">Analyse de l'interprétation</h3>
-                    <p style="color: #262730;">Les mots avec des valeurs positives élevées sont les plus influents dans le résultat de l'analyse.<br> A l'opposé, les mots avec des valeurs négatives vont à l'encontre de la prédiction.</p>
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-            
-            fig2 = px.bar(
-            data_frame= df, x="contribution", y="word",
-            color_discrete_sequence=['#7350EA'])
-            st.write(fig2)
-        else:
-            st.error(f"Erreur de l'API: {response.status_code}")
+    st.session_state.sentiment= result['sentiment']        
+    st.write(f"**Résultat de l'analyse :** {st.session_state.sentiment}")       
 
 # Afficher le sentiment si déjà calculé
 # if 'sentiment' in st.session_state:
@@ -116,4 +96,28 @@ def analyze_sentiment():
 if st.button("Analyser"):
     analyze_sentiment()
 
+if st.button("Interpretation"):
+    response = requests.post(f"{API_INTERPRET}", json={"text": user_input})
+    result = response.json()
+    df  = pd.DataFrame(result.get('interpretation'))
+    st.session_state.interpretation = result['interpretation']
+       
+    # Affiche l'interpretation
+
+    st.write("")
+    
+    st.markdown(
+        """
+        <div style="background-color: #E6F4FA; padding: 10px; border-radius: 5px;">
+            <h3 style="color: #262730;">Analyse de l'interprétation</h3>
+            <p style="color: #262730;">Les mots avec des valeurs positives élevées sont les plus influents dans le résultat de l'analyse.<br> A l'opposé, les mots avec des valeurs négatives vont à l'encontre de la prédiction.</p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+    
+    fig2 = px.bar(
+    data_frame= df, x="contribution", y="word",
+    color_discrete_sequence=['#7350EA'])
+    st.write(fig2)
 
