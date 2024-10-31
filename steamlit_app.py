@@ -15,11 +15,7 @@ from azure.storage.blob import BlobServiceClient
 st.set_page_config(
     page_title="Tableau de bord Projet 9",
     page_icon="🧊",
-    # layout="wide",
-    menu_items={
-    'Get Help': 'https://www.extremelycoolapp.com/help',
-    'Report a bug': "https://www.extremelycoolapp.com/bug",
-    'About': "# This is a header. This is an *extremely* cool app!"}
+    layout="wide"
 )
 
 
@@ -46,6 +42,7 @@ st.markdown("<h1 style='color: #7350EA;'>Tableau de bord Projet 9 :\n Analyse de
 
 st.write('### Aperçu des données')       
 st.dataframe(data_sample,use_container_width= True)
+
 
 col1,col2,col3 = st.columns([.5,.25,.25],gap='medium',
                         vertical_alignment= "bottom")
@@ -82,9 +79,7 @@ with col3:
 
 # URL API Azure
 API_URL = "https://apip09.azurewebsites.net/predict"
-# API_URL = "http://127.0.0.1:5000/predict"
 API_INTERPRET = "https://apip09.azurewebsites.net/interpret"
-# API_INTERPRET = "http://127.0.0.1:5000/predict/interpret"
 
 # Fonction pour analyser le sentiment
 st.write('### Test du modèle')
@@ -114,7 +109,6 @@ if st.button("Interpretation"):
     st.session_state.interpretation = result['interpretation']
        
     # Affiche l'interpretation
-
     st.write("")
     
     st.markdown(
