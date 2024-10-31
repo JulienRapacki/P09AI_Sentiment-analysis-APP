@@ -41,6 +41,7 @@ def load_file():
 # data_sample = st.session_state.data_sample
 data = load_file()
 data_sample = data.sample(50)
+
 st.markdown("<h1 style='color: #7350EA;'>Tableau de bord Projet 9 :\n Analyse de sentiments avec le Deep learning</h1>", unsafe_allow_html=True)
 
 st.write('### Aperçu des données')       
@@ -106,11 +107,11 @@ if st.button("Analyser"):
 
 # Bouton pour interpréter
 if st.button("Interpretation"):
-    if 'interpretation' not in st.session_state or st.session_state.interpretation != user_input:
-        response = requests.post(f"{API_INTERPRET}", json={"text": user_input})
-        result = response.json()
-        df  = pd.DataFrame(result.get('interpretation'))
-        st.session_state.interpretation = result['interpretation']
+    # if 'interpretation' not in st.session_state or st.session_state.interpretation != user_input:
+    response = requests.post(f"{API_INTERPRET}", json={"text": user_input})
+    result = response.json()
+    df  = pd.DataFrame(result.get('interpretation'))
+    st.session_state.interpretation = result['interpretation']
        
     # Affiche l'interpretation
 
@@ -125,13 +126,13 @@ if st.button("Interpretation"):
         """,
         unsafe_allow_html=True
     )
-    if 'interpretation' in st.session_state:
-        df = pd.DataFrame(st.session_state.interpretation)
-        fig2 = px.bar(data_frame=df, x="contribution", y="word", color_discrete_sequence=['#7350EA'])
-        st.write(fig2)
+    # if 'interpretation' in st.session_state:
+    #     df = pd.DataFrame(st.session_state.interpretation)
+    #     fig2 = px.bar(data_frame=df, x="contribution", y="word", color_discrete_sequence=['#7350EA'])
+    #     st.write(fig2)
     
-    # fig2 = px.bar(
-    # data_frame= df, x="contribution", y="word",
-    # color_discrete_sequence=['#7350EA'])
-    # st.write(fig2)
+    fig2 = px.bar(
+    data_frame= df, x="contribution", y="word",
+    color_discrete_sequence=['#7350EA'])
+    st.write(fig2)
 
