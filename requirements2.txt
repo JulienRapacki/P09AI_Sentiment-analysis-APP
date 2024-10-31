@@ -1,0 +1,9 @@
+
+matplotlib
+pandas
+plotly
+Requests
+streamlit
+wordcloud
+azure-storage-blob
+

@@ -38,22 +38,23 @@ st.write('### Aperçu des données')
 st.dataframe(data_sample,use_container_width= True)
 
 
-#WordCloud
-st.write('### Nuage de Mots')
-text_cloud = " ".join(data_sample['text'])
-wordcloud = WordCloud(width=800, height=400, background_color='white',colormap = 'Set2').generate(text_cloud)
-fig, ax = plt.subplots(figsize=(8, 4))
-ax.imshow(wordcloud, interpolation='bilinear')
-ax.axis("off")
-st.pyplot(fig)
 
-
-col1,col2 = st.columns([.5,.5],gap='medium',
+col1,col2,col3 = st.columns([.5,.25,.25],gap='medium',
                         vertical_alignment= "bottom")
 
-
+#WordCloud
 with col1:
-    col1.subheader('Distribution de la Longueur des Phrases')
+    col1.subheader('Nuage de Mots')
+    text_cloud = " ".join(data_sample['text'])
+    wordcloud = WordCloud(width=800, height=400, background_color='white',colormap = 'Set2').generate(text_cloud)
+    fig, ax = plt.subplots(figsize=(8, 4))
+    ax.imshow(wordcloud, interpolation='bilinear')
+    ax.axis("off")
+    st.pyplot(fig)
+
+# Histogram
+with col2:
+    col2.subheader('Distribution de la Longueur des Phrases')
     data['txt_length'] = data['text'].apply(len)
     fig1 = px.histogram(data, x='txt_length', nbins=10, 
     labels={'txt_length': 'Longueur des phrases'},
@@ -61,13 +62,12 @@ with col1:
     st.write(fig1)
 
 # Histogram
-with col2:
-    col2.subheader('Distribution des classes ')
+with col3:
+    col3.subheader('Distribution des classes ')
     fig = px.histogram(
             data_frame=data, x="sentiment",
             color_discrete_sequence=['#7350EA'])
     st.write(fig)
-
 
 
 # URL API Azure
