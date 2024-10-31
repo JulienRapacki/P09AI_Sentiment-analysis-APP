@@ -29,13 +29,14 @@ def load_file():
 
 
 
-if 'data' not in st.session_state:
-    st.session_state.data = load_file()
-    st.session_state.data_sample = st.session_state.data.sample(50)
+# if 'data' not in st.session_state:
+#     st.session_state.data = load_file()
+#     st.session_state.data_sample = st.session_state.data.sample(50)
 
-data = st.session_state.data
-data_sample = st.session_state.data_sample
-
+# data = st.session_state.data
+# data_sample = st.session_state.data_sample
+data = load_file()
+data_sample = data.sample(50)
 st.markdown("<h1 style='color: #7350EA;'>Tableau de bord Projet 9 :\n Analyse de sentiments avec le Deep learning</h1>", unsafe_allow_html=True)
 
 st.write('### Aperçu des données')       
